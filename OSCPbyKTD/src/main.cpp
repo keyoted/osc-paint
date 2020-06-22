@@ -31,7 +31,7 @@ int main(int, char const** argv) {
 		if(client.listen()) {
 			OSCmessage _message = client.parse();
 
-			if(_message.address.size() > 1 || _message.address[0] == "OSCP"){
+			if(_message.address.size() > 2 || _message.address[0] == "OSCP"){
 				if(_message.address[1] == "window"){
 					// remove OSCP and WINDOW
 					_message.address.erase(_message.address.begin(), _message.address.begin()+2);

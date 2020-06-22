@@ -1,5 +1,5 @@
 #pragma once
-#include <_types.h>
+
 #include <string>
 #include <vector>
 
@@ -15,17 +15,17 @@ enum OSCvalueType{
 
 struct OSCvalue{
 	OSCvalue(){}
-	
+
 	OSCvalue(const OSCvalue& other)
 	{
 		this->operator=(other);
 	}
-	
+
 	OSCvalue(OSCvalueType ntype)
 	{
 		type = ntype;
 	}
-	
+
 	OSCvalue& operator= (const OSCvalue& other)
 	{
 		if (this != &other) // protect against invalid self-assignment
@@ -58,7 +58,7 @@ struct OSCvalue{
 			// by convention, always return *this
 		return *this;
 	}
-	
+
 	template <typename T>
 	bool set(T* arg){
 		if(_alocated) return false;
@@ -66,27 +66,27 @@ struct OSCvalue{
 		_alocated = true;
 		return true;
 	}
-	
+
 	template <typename T>
 	T* get() const{
 		if(!_alocated) return nullptr;
 		return (T*) _data;
 	}
-	
+
 	~OSCvalue(){
 		destroy();
 	}
-	
+
 	OSCvalueType type = OSCvalueType::None;
 private:
-	
+
 	template <typename T>
 	void copy(const OSCvalue& other){
 		_data = (void*) new T;
 		*(T*)_data = *(other.get<T>());
 		_alocated = true;
 	}
-	
+
 	void destroy(){
 		if(!_alocated) return;
 		switch(type){
@@ -110,7 +110,7 @@ private:
 		}
 		_alocated = false;
 	}
-	
+
 	void* _data;
 	bool _alocated = false;
 };

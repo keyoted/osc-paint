@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "debug.hpp"
 
 window::window(const char* title)
 : _window(sf::VideoMode(sf::VideoMode::getDesktopMode().width/2,sf::VideoMode::getDesktopMode().height/2), title)
@@ -13,15 +14,15 @@ window::window(const char* title)
 		return;
 	}
 	_window.setIcon(_icon.getSize().x, _icon.getSize().y, _icon.getPixelsPtr());
-	
+
 	_state = OK;
 }
 
 void window::handleInput(){
-	
+
 	float smallestDist;
 	sf::Vector2i mousePos;
-	
+
 	// Process events
 	sf::Event event;
 	while (_window.pollEvent(event))
@@ -32,12 +33,12 @@ void window::handleInput(){
 				_window.close();
 				_state = CLOSED;
 				break;
-				
-				
+
+
 			// Track weather mouse is pressed on a vertex
 			case sf::Event::MouseButtonPressed:
 				if (!(event.mouseButton.button == sf::Mouse::Left && _surfaces.size() > 0)) break;
-				
+
 				mousePos = sf::Mouse::getPosition(_window);
 				if(_selectedSurface >= _surfaces.size()) break;
 				for (int curVertex = 0; curVertex < 4; ++curVertex) {
@@ -49,7 +50,7 @@ void window::handleInput(){
 					}
 				}
 				break;
-				
+
 			case sf::Event::MouseButtonReleased:
 				if (event.mouseButton.button == sf::Mouse::Left)
 					_isMousePressed = false;
@@ -57,14 +58,14 @@ void window::handleInput(){
 			case sf::Event::MouseLeft:
 				_isMousePressed = false;
 				break;
-				
-			
+
+
 			// Move verticies
 			case sf::Event::MouseMoved:
 				if(!_isMousePressed || _movingVert == nullptr) break;
 				_movingVert->set(event.mouseMove.x, event.mouseMove.y);
 				break;
-				
+
 			default:
 				break;
 		}
@@ -72,18 +73,18 @@ void window::handleInput(){
 }
 
 void window::draw(){
-	
+
 	_window.setActive();
-	
+
 	_window.clear(_bgColor);
-	
+
 	for (surface* currSurface: _surfaces) {
 		_window.draw(*currSurface);
 	}
-	
+
 	if(drawSelectedSurface && _selectedSurface < _surfaces.size())
 		_surfaces[_selectedSurface]->drawOutline(&_window);
-	
+
 	_window.display();
 }
 
@@ -127,7 +128,7 @@ window::~window(){
 
 void window::handleOSC(OSCmessage* message){
 	if(message->address.size() < 1) return;
-	
+
 	/* PASS TO SURFACE */
 	if(message->address[0] == "surface"){
 		if(message->address.size() < 2) return;
@@ -137,7 +138,7 @@ void window::handleOSC(OSCmessage* message){
 			_surfaces[surf]->handleOSC(message);
 		}
 	}
-	
+
 	/* CREATE A SURFACE */
 	else if(message->address[0] == "create_surface"){
 		if(message->values.size() < 4) return;;
@@ -149,15 +150,15 @@ void window::handleOSC(OSCmessage* message){
 					  message->values[2].type == Int?*message->values[2].get<int>():*message->values[2].get<float>(),
 					  message->values[3].type == Int?*message->values[3].get<int>():*message->values[3].get<float>());
 	}
-	
+
 	/* DELETE A SURFACE*/
 	else if(message->address[0] == "delete_surface"){
 		deleteSurface(*message->values[0].get<int>());
 	}
-	
+
 	/* TOGGLE FULLSCREEN */
 	else if(message->address[0] == "fullscreen") toggleFullScreen();
-	
+
 	/* SELECT SURFACE */
 	else if(message->address[0] == "select"){
 		//for(auto a:message->address) std::cout << a << " / "; std::cout << std::endl;
@@ -165,8 +166,12 @@ void window::handleOSC(OSCmessage* message){
 		if( *message->values[0].get<int>() < _surfaces.size() && *message->values[0].get<int>() > -1)
 			_selectedSurface = *message->values[0].get<int>();
 	}
-	
+
 	/* TOGGLE SELECTED SURFACE OUTLINE */
-	else if(message->address[0] == "outline")
+	else if(message->address[0] == "outline") {
 		drawSelectedSurface = !drawSelectedSurface;
+		if(drawSelectedSurface) debug_msg<DEBUG_LEVEL::BEHAVIOUR>("OUTLINE: ON");
+		else debug_msg<DEBUG_LEVEL::BEHAVIOUR>("OUTLINE: OFF");
+	}
+
 }

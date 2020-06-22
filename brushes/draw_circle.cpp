@@ -7,7 +7,9 @@
 #define HEIGHT height
 #define WIDTH width
 #define OSCMES message
+
 #include <cmath>
+#define IMPORTDRAW 1
 
 struct data{
 	int centerX, centerY, Radius;
@@ -22,8 +24,7 @@ extern "C"{
 			d.centerY = *message->values[2].get<int>();
 			d.Radius = *message->values[3].get<int>();
 			return (void*)&d;
-		}else {
-			float a = *message->values[1].get<float>(), b = *message->values[2].get<float>();
+		} else {
 			d.centerX = (*message->values[1].get<float>()) * (float)width;
 			d.centerY = (*message->values[2].get<float>()) * (float)height;
 			d.Radius = *message->values[3].get<int>();
@@ -33,7 +34,14 @@ extern "C"{
 
 	void* update(const unsigned char* read, unsigned int width, unsigned int height, void* customData, const OSCmessage* message) {
 		data & d = *((data*)customData);
-		d.Radius = *message->values[0].get<float>();
+		if(message->values.size() >= 1) {
+			d.Radius = *message->values[0].get<int>();
+			if(message->values.size() >= 2) {
+				d.centerX = *message->values[1].get<int>();
+				if(message->values.size() >= 3)
+					d.centerY = *message->values[2].get<int>();
+			}
+		}
 		return customData;
 	}
 

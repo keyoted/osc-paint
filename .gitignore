@@ -1,1 +1,4 @@
-bin/*
+bin/resources/*
+bin/brushes/*
+bin/main.*
+bin/exe.*

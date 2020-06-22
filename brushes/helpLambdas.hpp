@@ -27,7 +27,7 @@ struct color{
 
 /* Safetly get types */
 auto sGetInt = [](const OSCmessage* message, unsigned int index) -> int{
-	if(message->values.size() >= index) return 0;
+	if(message->values.size() <= index) return 0;
 	switch(message->values[index].type){
 		case Int: return *message->values[index].get<int>();
 		case Float: return (int)(*message->values[index].get<float>());
@@ -37,7 +37,7 @@ auto sGetInt = [](const OSCmessage* message, unsigned int index) -> int{
 };
 
 auto sGetFloat = [](const OSCmessage* message, unsigned int index) -> float{
-	if(message->values.size() >= index) return 0;
+	if(message->values.size() <= index) return 0;
 	switch(message->values[index].type){
 		case Int: return *message->values[index].get<int>();
 		case Float: return (float)(*message->values[index].get<float>());
@@ -133,7 +133,7 @@ auto drawCircle = [&](int centerX, int centerY, int radius, int colorR, int colo
 
 
 	int pk = 3 - 2*radius;
-	int x=0; 
+	int x=0;
 	int y = radius;
 	drawCirclePoints(x,y);
 	while(x < y) {
@@ -164,7 +164,7 @@ auto drawCircleProtected = [&](int centerX, int centerY, int radius, int colorR,
 			if(x+centerY > 0 && x+centerY < HEIGHT) writePixel(y+centerX, x+centerY, colorR, colorG, colorB, colorA);
 			if(-x+centerY > 0 && -x+centerY < HEIGHT) writePixel(y+centerX, -x+centerY, colorR, colorG, colorB, colorA);
 		}
-		
+
 		if(-y+centerX > 0 && -y+centerX < WIDTH){
 			if(x+centerY > 0 && x+centerY < HEIGHT) writePixel(-y+centerX, x+centerY, colorR, colorG, colorB, colorA);
 			if(-x+centerY > 0 && -x+centerY < HEIGHT) writePixel(-y+centerX, -x+centerY, colorR, colorG, colorB, colorA);
@@ -185,7 +185,7 @@ auto drawCircleProtected = [&](int centerX, int centerY, int radius, int colorR,
 
 
 	int pk = 3 - 2*radius;
-	int x=0; 
+	int x=0;
 	int y = radius;
 	drawCirclePoints(x,y);
 	while(x < y) {

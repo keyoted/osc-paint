@@ -1,0 +1,76 @@
+#N canvas 241 500 939 445 10;
+#X msg 18 658 connect 127.0.0.1 5433;
+#X obj 293 709 packOSC;
+#X obj 293 739 udpsend;
+#X msg 173 657 disconnect;
+#X msg 313 79 send /OSCP/window/fullscreen;
+#X floatatom 512 109 5 0 0 0 - - -;
+#X msg 338 135 send /OSCP/window/outline;
+#X msg 238 -48 send /OSCP/quit;
+#X msg 248 -25 send /OSCP/reload_brushes;
+#X msg 300 55 send /OSCP/window/delete_surface 0;
+#X msg 325 108 send /OSCP/window/select/ \$1;
+#X obj 492 226 hsl 50 15 0 640 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 472 265 5 0 0 0 - - -;
+#X msg 487 341 send /OSCP/window/surface/0/delete_brush/0;
+#X msg 294 32 send /OSCP/window/create_surface 0 0 640 400;
+#X obj 472 230 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 472 245 float;
+#X floatatom 511 244 5 0 0 0 - - -;
+#X msg 440 183 send /OSCP/window/surface/0/create_brush/TEST "/Users/Keyoted/dev/OSCPbyKTD/brushes/test.bru"
+0 0 640 400;
+#X obj 571 226 hsl 50 15 0 640 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 551 265 5 0 0 0 - - -;
+#X obj 551 245 float;
+#X floatatom 590 244 5 0 0 0 - - -;
+#X obj 652 226 hsl 50 15 0 640 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 632 265 5 0 0 0 - - -;
+#X obj 632 245 float;
+#X floatatom 671 244 5 0 0 0 - - -;
+#X obj 731 226 hsl 50 15 0 640 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 711 265 5 0 0 0 - - -;
+#X obj 711 245 float;
+#X floatatom 750 244 5 0 0 0 - - -;
+#X obj 472 290 pack f f f f;
+#X msg 472 313 send /OSCP/window/surface/0/update_brush/0 \$1 \$2 \$3
+\$4;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 10 0;
+#X connect 6 0 1 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 1 0;
+#X connect 10 0 1 0;
+#X connect 11 0 16 1;
+#X connect 11 0 17 0;
+#X connect 12 0 31 0;
+#X connect 13 0 1 0;
+#X connect 14 0 1 0;
+#X connect 15 0 16 0;
+#X connect 15 0 21 0;
+#X connect 15 0 25 0;
+#X connect 15 0 29 0;
+#X connect 16 0 12 0;
+#X connect 18 0 1 0;
+#X connect 19 0 21 1;
+#X connect 19 0 22 0;
+#X connect 20 0 31 1;
+#X connect 21 0 20 0;
+#X connect 23 0 25 1;
+#X connect 23 0 26 0;
+#X connect 24 0 31 2;
+#X connect 25 0 24 0;
+#X connect 27 0 29 1;
+#X connect 27 0 30 0;
+#X connect 28 0 31 3;
+#X connect 29 0 28 0;
+#X connect 31 0 32 0;
+#X connect 32 0 1 0;
